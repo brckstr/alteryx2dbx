@@ -11,7 +11,7 @@ class AlteryxNode(object):
 		self.tool_dict = class_defs[node_dict["GuiSettings"]["@Plugin"]]
 
 	def render_code(self):
-		return self.template.render({"node":self.node_dict, "conns": self.connections, "id": self.node_dict["@ToolID"], "tool": self.tool_dict, "node_dict": json.dumps(self.node_dict, indent=4)})
+		return self.template.render({"node":self.node_dict, "conns": self.connections, "id": self.node_dict["@ToolID"], "tool": self.tool_dict, "node_dict": "# "+"\n# ".join(json.dumps(self.node_dict, indent=4).split("\n"))})
 
 	@staticmethod
 	def modify_dict(node_dict):
