@@ -14,6 +14,11 @@
 
 # COMMAND ----------
 
+# MAGIC %pip install databricks-sdk --upgrade
+# MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
 import base64
 import time
 
@@ -27,7 +32,7 @@ from alteryx2dbx import AlteryxWorkflow
 
 yxmd_contents = """
     <PASTE_YXMD_FILE_CONTENTS_HERE>
-"""
+""".strip()
 
 # COMMAND ----------
 
@@ -36,12 +41,6 @@ workflow_object = AlteryxWorkflow.from_string(yxmd_contents)
 workflow_name = workflow_object.name
 
 workflow_notebook = workflow_object.to_string()
-
-
-# COMMAND ----------
-
-# MAGIC %pip install databricks-sdk --upgrade
-# MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
 
