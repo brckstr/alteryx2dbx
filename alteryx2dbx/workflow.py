@@ -1,0 +1,76 @@
+import os
+from collections import defaultdict
+from xml.etree import cElementTree as ET
+
+from jinja2 import Environment, FileSystemLoader
+
+from .tools import *
+from .tool_defs import tool_defs
+from .node import AlteryxNode
+
+class AlteryxWorkflow(object):
+    """docstring for AlteryxWorkflow"""
+    environment = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),"templates")))
+
+    def __init__(self, etree_contents):
+        self.workflow_dict = self.etree_to_dict(etree_contents)["AlteryxDocument"]
+        self.name = self.workflow_dict["Properties"]["MetaInfo"]["Name"]
+        self.description = self.workflow_dict["Properties"]["MetaInfo"]["Description"]
+        self.node_dict = { n["@ToolID"]: self.tool_lookup(n) for n in self.workflow_dict["Nodes"]["Node"] }
+        self.connection_list = self.workflow_dict["Connections"]["Connection"]
+        self.import_list = []
+        self.template = self.environment.get_template("workflow.txt")
+
+    @classmethod
+    def tool_lookup(cls, node_dict):
+    	tool_class = node_dict["GuiSettings"]["@Plugin"]
+    	new_node = tool_defs[tool_class] or AlteryxNode
+    	return new_node(node_dict, cls.environment)
+
+    @staticmethod
+    def etree_to_dict(t):
+        d = {t.tag: {} if t.attrib else None}
+        children = list(t)
+        if children:
+            dd = defaultdict(list)
+            for dc in map(AlteryxWorkflow.etree_to_dict, children):
+                for k, v in dc.items():
+                    dd[k].append(v)
+            d = {t.tag: {k:v[0] if len(v) == 1 else v for k, v in dd.items()}}
+        if t.attrib:
+            d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
+        if t.text:
+            text = t.text.strip()
+            if children or t.attrib:
+                if text:
+                  d[t.tag]['#text'] = text
+            else:
+                d[t.tag] = text
+        return d
+
+    @classmethod
+    def from_string(cls, file_contents):
+        e = ET.XML(file_contents)
+        return cls(e)
+
+    @classmethod
+    def from_file(cls, filepath):
+        with open(filepath,"r") as ifile:
+            return cls.from_string(ifile.read())
+
+    @staticmethod
+    def node_from_dict(node_dict):
+    	pass
+
+    def to_string(self):
+        node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]
+        rendered_nodes = "\n\n".join(node_list)
+        return self.template.render({"workflow_name":self.name, "workflow_description": self.description, "nodes": rendered_nodes})
+
+if __name__ == "__main__":
+    a = AlteryxWorkflow.from_file("../sample_workflows/AIM Stack Flag.yxmd")
+    # for node in a.workflow_dict["Nodes"]["Node"]: # ["Connections"]["Connection"]:
+    #     print(node)
+
+    print(a.workflow_dict)
+    print(a.to_string())

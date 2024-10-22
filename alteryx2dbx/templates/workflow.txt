@@ -1,0 +1,8 @@
+# Databricks notebook source
+# MAGIC
+# MAGIC %md
+# MAGIC # {{ workflow_name }}
+# MAGIC **Description:** {{ workflow_description }}
+# MAGIC This workflow was converted from {{ workflow_name }}.yxmd
+
+{{ nodes }}
