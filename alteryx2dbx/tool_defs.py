@@ -77,7 +77,7 @@ tool_defs = {
     'AlteryxSpatialPluginsGui.ReportMap.ReportMap': None, # ReportMap, 
     'PortfolioPluginsGui.ComposerText.PortfolioComposerText': None, # ReportText, 
     'PortfolioPluginsGui.ComposerTable.PortfolioComposerTable': None, # Table, 
-    'AlteryxGuiToolkit.TextBox.TextBox': None, # Comment, 
+    'AlteryxGuiToolkit.TextBox.TextBox': Comment, 
     'AlteryxGuiToolkit.HtmlBox.HtmlBox': None, # ExplorerBox, 
     'AlteryxGuiToolkit.ToolContainer.ToolContainer': None, # ToolContainer, 
     'AlteryxSpatialPluginsGui.Buffer.Buffer': None, # Buffer, 
