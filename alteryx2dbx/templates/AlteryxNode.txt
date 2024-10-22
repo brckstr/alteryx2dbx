@@ -2,7 +2,7 @@
 
 # MAGIC %md
 # MAGIC ## Node {{ id }}
-# MAGIC #![Alt text]({{ tool.image_url }}) {{ tool.name }}
+# MAGIC #![Alt text]({{ tool.image_url }}) {{ tool.tool_name }}
 {% block body %}# MAGIC 
 # MAGIC #### The {{ tool.name }} tool has not been implemented yet. Below are the contents of the yxmd node definition.
 
