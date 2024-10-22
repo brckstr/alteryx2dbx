@@ -25,7 +25,7 @@ tool_defs = {
     'AlteryxBasePluginsGui.Sample.Sample': None, # Sample, 
     'AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect': None, # Select, 
     'SelectRecords.yxmc': None, # SelectRecords, 
-    'AlteryxBasePluginsGui.Sort.Sort': None, # Sort, 
+    'AlteryxBasePluginsGui.Sort.Sort': Sort, 
     'AlteryxBasePluginsGui.Tile.Tile': None, # Tile, 
     'AlteryxBasePluginsGui.Unique.Unique': None, # Unique, 
     'AlteryxBasePluginsGui.AppendFields.AppendFields': None, # AppendFields, 

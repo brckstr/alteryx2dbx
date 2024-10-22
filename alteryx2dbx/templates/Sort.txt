@@ -1,0 +1,8 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}
+# COMMAND ----------
+
+{{ output_name }} = {{ input_name }}.sort({{ sort_options }})
+{% endblock %}

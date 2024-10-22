@@ -1,5 +1,6 @@
 crawl_tools/
 working/
+samples/
 sample_workflows/
 scrapy.cfg
 .DS_Store

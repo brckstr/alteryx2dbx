@@ -20,6 +20,8 @@ class AlteryxWorkflow(object):
         self.connection_list = self.workflow_dict["Connections"]["Connection"]
         self.import_list = []
         self.template = self.environment.get_template("workflow.txt")
+        for conn in self.connection_list:
+            self.update_connection(conn)
 
     @classmethod
     def tool_lookup(cls, node_dict):
@@ -58,19 +60,14 @@ class AlteryxWorkflow(object):
         with open(filepath,"r") as ifile:
             return cls.from_string(ifile.read())
 
-    @staticmethod
-    def node_from_dict(node_dict):
-    	pass
+    def update_connection(self, connection):
+        input_tool_id = connection["Origin"]["@ToolID"]
+        input_value = self.node_dict[input_tool_id].output_name
+        output_tool_id = connection["Destination"]["@ToolID"]
+        output_key = connection["Destination"]["@Connection"]
+        self.node_dict[output_tool_id].inputs[output_key] = input_value
 
     def to_string(self):
         node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]
         rendered_nodes = "\n\n".join(node_list)
         return self.template.render({"workflow_name":self.name, "workflow_description": self.description, "nodes": rendered_nodes})
-
-if __name__ == "__main__":
-    a = AlteryxWorkflow.from_file("../sample_workflows/AIM Stack Flag.yxmd")
-    # for node in a.workflow_dict["Nodes"]["Node"]: # ["Connections"]["Connection"]:
-    #     print(node)
-
-    print(a.workflow_dict)
-    print(a.to_string())
