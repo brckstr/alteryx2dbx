@@ -69,5 +69,5 @@ class AlteryxWorkflow(object):
 
     def to_string(self):
         node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]
-        rendered_nodes = "\n\n".join(node_list)
+        rendered_nodes = "\n".join(node_list)
         return self.template.render({"workflow_name":self.name, "workflow_description": self.description, "nodes": rendered_nodes})
