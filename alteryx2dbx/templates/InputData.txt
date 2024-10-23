@@ -2,6 +2,8 @@
 
 {% if file_type == "oracle" %}
 {% block body %}
+# COMMAND ----------
+
 {{ output_name }} = (
   spark.read.format("jdbc")
   .option("url", "jdbc:oracle:thin:@//{{ file_opts.jdbc_url }}")
