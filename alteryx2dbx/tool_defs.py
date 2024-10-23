@@ -12,7 +12,7 @@ tool_defs = {
     'AlteryxBasePluginsGui.AutoField.AutoField': None, # AutoField, 
     'Predictive Tools\\Create_Samples.yxmc': None, # CreateSamples, 
     'Cleanse.yxmc': None, # DataCleansing, 
-    'AlteryxBasePluginsGui.Filter.Filter': None, # Filter, 
+    'AlteryxBasePluginsGui.Filter.Filter': Filter, 
     'AlteryxBasePluginsGui.Formula.Formula': None, # Formula, 
     'AlteryxBasePluginsGui.GenerateRows.GenerateRows': None, # GenerateRows, 
     'Imputation_v3.yxmc': None, # Imputation, 

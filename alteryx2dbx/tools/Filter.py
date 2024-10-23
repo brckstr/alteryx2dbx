@@ -1,0 +1,39 @@
+import json
+from urllib.parse import unquote
+
+from ..node import AlteryxNode
+
+class Filter(AlteryxNode):
+    description = ("The comment tool allows you to add descriptive text to your workflow")
+    caveats = ("In the Alteryx XML code, the Comment tool nodes are not specifically connected to other nodes"
+        "and therefore they simply appear in the order of the node list. Efforts may be made in future to reorder"
+        "these cells in future based on their proximity in the flow UI.")
+
+    def __init__(self, node_dict, environment):
+        super().__init__(node_dict, environment)
+
+    def render_code(self):
+        return self.template.render({
+        	"node":self.node_dict, 
+        	"id": self.node_dict["@ToolID"], 
+        	"tool": self.tool_dict,
+        	"output_name": self.output_name,
+        	"input_name": self.inputs["Input"],
+        	"filter_expression": self.node_dict["filter_options"]
+        })
+
+    @staticmethod
+    def modify_dict(node_dict):
+        if node_dict["Properties"]["Configuration"]["Mode"] == "Simple":
+            expr_details = node_dict["Properties"]["Configuration"]["Simple"]
+            operand = expr_details["Operands"]["Operand"]
+            if operand.isnumeric():
+            	operand = int(operand)
+            filter_expr = "%s %s %r" % (expr_details["Field"],expr_details["Operator"], operand)
+        else:
+            filter_expr = unquote(node_dict["Properties"]["Configuration"]["Expression"]).replace("[", "").replace("]", "")
+        node_dict["filter_options"] = filter_expr
+        print(filter_expr)
+        return node_dict
+
+# Add Annotation text
