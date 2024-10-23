@@ -33,7 +33,6 @@ class Filter(AlteryxNode):
         else:
             filter_expr = unquote(node_dict["Properties"]["Configuration"]["Expression"]).replace("[", "").replace("]", "")
         node_dict["filter_options"] = filter_expr
-        print(filter_expr)
         return node_dict
 
 # Add Annotation text
