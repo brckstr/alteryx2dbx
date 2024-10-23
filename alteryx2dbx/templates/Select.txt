@@ -1,0 +1,10 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}
+# COMMAND ----------
+
+{{ output_name }} = {{ input_name }}.select({{ select_expression }})
+
+display({{ output_name }})
+{% endblock %}

@@ -23,7 +23,7 @@ tool_defs = {
     'RandomRecords.yxmc': None, # Random%Sample, 
     'AlteryxBasePluginsGui.RecordID.RecordID': None, # RecordID, 
     'AlteryxBasePluginsGui.Sample.Sample': None, # Sample, 
-    'AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect': None, # Select, 
+    'AlteryxBasePluginsGui.AlteryxSelect.AlteryxSelect': Select, 
     'SelectRecords.yxmc': None, # SelectRecords, 
     'AlteryxBasePluginsGui.Sort.Sort': Sort, 
     'AlteryxBasePluginsGui.Tile.Tile': None, # Tile, 
