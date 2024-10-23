@@ -31,7 +31,7 @@ tool_defs = {
     'AlteryxBasePluginsGui.AppendFields.AppendFields': None, # AppendFields, 
     'AlteryxBasePluginsGui.FindReplace.FindReplace': None, # FindReplace, 
     'AlteryxBasePluginsGui.FuzzyMatch.FuzzyMatch': None, # FuzzyMatch, 
-    'AlteryxBasePluginsGui.Join.Join': None, # Join, 
+    'AlteryxBasePluginsGui.Join.Join': Join, 
     'AlteryxBasePluginsGui.JoinMultiple.JoinMultiple': None, # JoinMultiple, 
     'AlteryxBasePluginsGui.MakeGroup.MakeGroup': None, # MakeGroup, 
     'AlteryxBasePluginsGui.Union.Union': None, # Union, 

@@ -1,0 +1,23 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}
+# COMMAND ----------
+
+{{ output_name }} = (
+  {{ join_options.left }}.alias("Left")
+  .join(
+    {{ join_options.right }}.alias("Right"),
+    expr("""
+        {% for cond in join_options.conditions %}Left.{{ cond[0] }} == Right.{{ cond[1] }}{% if not loop.last %} AND 
+        {% endif %}{% endfor %}
+    """),
+    "{{ join_options.type }}"
+  ).select(
+    {% for field in join_options.select_fields %}"{{ field[0] }} AS `{{ field[1] }}`"{% if not loop.last %},
+    {% endif %}{% endfor %}
+    {% if join_options.star %}*{% endif %}
+  )
+
+display({{ output_name }})
+{% endblock %}
