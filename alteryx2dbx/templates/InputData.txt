@@ -1,15 +1,19 @@
 {% extends "AlteryxNode.txt" %}
 
-
-{% block fred %}
+{% if file_type == "oracle" %}
+{% block body %}
 {{ output_name }} = (
   spark.read.format("jdbc")
-  .option("url", "jdbc:oracle:thin:@//dprs-new.cmu74rtitsbe.eu-west-1.rds.amazonaws.com:1521/ORCL")
-  .option("user", "<username>")
-  .option("password", "<password>")
+  .option("url", "jdbc:oracle:thin:@//{{ file_opts.jdbc_url }}")
+  .option("user", {{ file_opts.username }})
+  .option("password", dbutils.secrets.get("<secret_store>","oracle_password"))
   .option("driver", "oracle.jdbc.driver.OracleDriver")
-  .option("query","SELECT * FROM DPRS_OWNER.DPRS_SITE_REALTIME_DATA")
-  .option("numPartitions", 10)
+  .option("query","""
+  {{ file_opts.query }}
+  """)
   .load()
 )
+
+display({{ output_name }})
 {% endblock %}
+{% endif %}
