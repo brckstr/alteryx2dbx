@@ -8,7 +8,7 @@
 # MAGIC * Generally, each node in the workflow gets its own cell in the generated notebook.
 # MAGIC * Only a limited number of tools are currently supported. For unsupported tools, a placeholder cell will be generated with the metadata of the tool configuration
 # MAGIC ### Instructions
-# MAGIC 1. Copy the contents of your Workflow(yxmd) file and paste it in place of the "<PASTE_YXMD_FILE_CONTENTS_HERE>" string in the cell below
+# MAGIC 1. Copy the contents of your Workflow(yxmd) file and paste it in place of the "\<PASTE_YXMD_FILE_CONTENTS_HERE\>" string in the cell below
 # MAGIC 2. Execute the notebook
 # MAGIC 3. The generated notebook will appear in the root level of your user directory
 

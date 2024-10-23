@@ -11,4 +11,3 @@
 
 {{ node_dict }}  
 {% endblock %}
-

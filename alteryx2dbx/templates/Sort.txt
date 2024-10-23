@@ -5,4 +5,6 @@
 # COMMAND ----------
 
 {{ output_name }} = {{ input_name }}.sort({{ sort_options }})
+
+display(output_name)
 {% endblock %}

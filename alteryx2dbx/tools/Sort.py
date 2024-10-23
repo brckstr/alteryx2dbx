@@ -12,21 +12,24 @@ class Sort(AlteryxNode):
 
     def render_code(self):
         return self.template.render({
-        	"node":self.node_dict, 
-        	"id": self.node_dict["@ToolID"], 
-        	"tool": self.tool_dict,
-        	"output_name": self.output_name,
-        	"input_name": self.inputs["Input"],
-        	"sort_options": self.node_dict["sort_options"]
+            "node":self.node_dict, 
+            "id": self.node_dict["@ToolID"], 
+            "tool": self.tool_dict,
+            "output_name": self.output_name,
+            "input_name": self.inputs["Input"],
+            "sort_options": self.node_dict["sort_options"]
         })
 
     @staticmethod
     def modify_dict(node_dict):
         fields = []
         orders = []
-        for field in node_dict["Properties"]["Configuration"]["SortInfo"]["Field"]:
-        	fields.append(field["@field"])
-        	orders.append(str(field["@order"] == "Ascending"))
+        field_obj = node_dict["Properties"]["Configuration"]["SortInfo"]["Field"]
+        if isinstance(field_obj,dict):
+            field_obj = [field_obj]
+        for field in field_obj:
+            fields.append(field["@field"])
+            orders.append(str(field["@order"] == "Ascending"))
         node_dict["sort_options"] = "\""+"\",\"".join(fields)+"\", ascending=[" +",".join(orders) +"]"
         return node_dict
 
