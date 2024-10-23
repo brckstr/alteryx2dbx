@@ -4,7 +4,7 @@
 {% block body %}
 # COMMAND ----------
 
-{{ output_name }} = {{ input_name }}.filter('{{ filter_expression }}')
+{{ output_name }} = {{ input_name }}.filter("{{ filter_expression }}")
 
 display({{ output_name }})
 {% endblock %}
