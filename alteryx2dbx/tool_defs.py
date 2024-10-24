@@ -34,7 +34,7 @@ tool_defs = {
     'AlteryxBasePluginsGui.Join.Join': Join, 
     'AlteryxBasePluginsGui.JoinMultiple.JoinMultiple': None, # JoinMultiple, 
     'AlteryxBasePluginsGui.MakeGroup.MakeGroup': None, # MakeGroup, 
-    'AlteryxBasePluginsGui.Union.Union': None, # Union, 
+    'AlteryxBasePluginsGui.Union.Union': Union, 
     'AlteryxBasePluginsGui.DateTime.DateTime': None, # DateTime, 
     'AlteryxBasePluginsGui.RegEx.RegEx': None, # RegEx, 
     'AlteryxBasePluginsGui.TextToColumns.TextToColumns': None, # TextToColumns, 

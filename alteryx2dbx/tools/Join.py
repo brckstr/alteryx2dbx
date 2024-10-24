@@ -40,7 +40,7 @@ class Join(AlteryxNode):
                 select_fields.append(("%s.%s" % (side, "_".join(fname)),field.get("@rename",field["@field"])))
         node_dict["join_options"] = {
             "select_fields": select_fields,
-            "conditions": zip(join_fields["Left"], join_fields["Right"]),
+            "conditions": list(zip(join_fields["Left"], join_fields["Right"])),
             "star": star,
             "type": "left"
         }

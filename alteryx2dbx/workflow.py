@@ -16,7 +16,16 @@ class AlteryxWorkflow(object):
         self.workflow_dict = self.etree_to_dict(etree_contents)["AlteryxDocument"]
         self.name = self.workflow_dict["Properties"]["MetaInfo"]["Name"]
         self.description = self.workflow_dict["Properties"]["MetaInfo"]["Description"]
-        self.node_dict = { n["@ToolID"]: self.tool_lookup(n) for n in self.workflow_dict["Nodes"]["Node"] }
+        self.node_dict = {}
+        for n in self.workflow_dict["Nodes"]["Node"]:
+            if n["GuiSettings"]["@Plugin"] == "AlteryxGuiToolkit.ToolContainer.ToolContainer":
+                children = n["ChildNodes"]["Node"]
+                if not isinstance(children, list):
+                    children = [children]
+                for c in children:
+                    print(c)
+                    self.node_dict[c["@ToolID"]] = self.tool_lookup(c)
+            self.node_dict[n["@ToolID"]] = self.tool_lookup(n) 
         self.connection_list = self.workflow_dict["Connections"]["Connection"]
         self.import_list = []
         self.template = self.environment.get_template("workflow.txt")
@@ -65,7 +74,13 @@ class AlteryxWorkflow(object):
         input_value = self.node_dict[input_tool_id].output_name
         output_tool_id = connection["Destination"]["@ToolID"]
         output_key = connection["Destination"]["@Connection"]
-        self.node_dict[output_tool_id].inputs[output_key] = input_value
+        if (current_value:=self.node_dict[output_tool_id].inputs.get(output_key)):
+            if isinstance(current_value,list):
+                self.node_dict[output_tool_id].inputs[output_key].append(input)
+            else:
+                self.node_dict[output_tool_id].inputs[output_key] = [current_value, input_value]
+        else:
+            self.node_dict[output_tool_id].inputs[output_key]= input_value
 
     def to_string(self):
         node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]

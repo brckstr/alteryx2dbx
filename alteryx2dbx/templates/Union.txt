@@ -1,0 +1,10 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}
+# COMMAND ----------
+
+{{ output_name }} = {{ inputs[0] }}.union({{ inputs[1]}})
+
+display({{ output_name }})
+{% endblock %}
