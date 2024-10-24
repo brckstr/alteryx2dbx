@@ -4,7 +4,7 @@
 {% block body %}
 # COMMAND ----------
 
-{{ output_name }} = {{ input_name }}.sort({{ sort_options }})
+{{ output_name }} = {{ input_name }}.sort({{ sort_options.fields|stringlist}}, ascending={{ sort_options.orders }})
 
 display({{ output_name }})
 {% endblock %}

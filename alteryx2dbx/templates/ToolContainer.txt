@@ -1,0 +1,8 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}# MAGIC 
+# MAGIC #### The following Node Ids are enclosed within this container:
+# MAGIC # [{{ node_ids|stringlist }}]
+
+{% endblock %}

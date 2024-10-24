@@ -17,13 +17,11 @@ class Select(AlteryxNode):
             "select_expression": self.node_dict["select_expression"]
         })
 
-    @staticmethod
-    def modify_dict(node_dict):
+    @classmethod
+    def modify_dict(cls, node_dict):
         fields = []
         field_obj = node_dict["Properties"]["Configuration"]["SelectFields"]["SelectField"]
-        if isinstance(field_obj,dict):
-            field_obj = [field_obj]
-        for field in field_obj:
+        for field in cls.list_items(field_obj):
             if field["@selected"] == "True":
                 fields.append(field["@field"])
         node_dict["select_expression"] = "\""+"\",\"".join(fields)+"\""

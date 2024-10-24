@@ -20,18 +20,16 @@ class Join(AlteryxNode):
             "join_options": self.node_dict["join_options"]
         })
 
-    @staticmethod
-    def modify_dict(node_dict):
+    @classmethod
+    def modify_dict(cls, node_dict):
         join_fields = { "Left": [], "Right": []}
         select_fields = []
         star = False
         for field_side in node_dict["Properties"]["Configuration"]["JoinInfo"]:
-            for field in field_side["Field"]:
+            for field in cls.list_items(field_side["Field"]):
                 join_fields[field_side["@connection"]].append(field["@field"])
         field_obj = node_dict["Properties"]["Configuration"]["SelectConfiguration"]["Configuration"]["SelectFields"]["SelectField"]
-        if isinstance(field_obj,dict):
-            field_obj = [field_obj]
-        for field in field_obj:
+        for field in cls.list_items(field_obj):
             # if field["@selected"] == "True":
             if field["@field"] == "*Unknown":
                 star = True

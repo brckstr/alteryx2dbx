@@ -1,0 +1,20 @@
+{% extends "AlteryxNode.txt" %}
+
+
+{% block body %}
+# COMMAND ----------
+
+{{ output_name }} = (
+  {{ input_name }}
+  {% if summarize_options.groupby_fields %}.groupBy([
+    {{ summarize_options.groupby_fields|stringlist(indent=4)}}
+  ]){% endif %}
+{% if summarize_options.agg_ops %}  .agg(
+    {% for field in summarize_options.agg_ops %}{{ field.action.lower() }}("{{ field.field}}").alias("{{field.rename}}"){% if not loop.last %},
+    {% endif %}{%endfor%}
+  )
+{% else %}  .count().drop("count")
+{% endif %}
+   
+display({{ output_name }})
+{% endblock %}

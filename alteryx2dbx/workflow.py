@@ -8,9 +8,19 @@ from .tools import *
 from .tool_defs import tool_defs
 from .node import AlteryxNode
 
+## Templating Environment
+template_env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),"templates")))
+
+def string_list(input_list, indent=None):
+    newline = "\n" if indent else ""
+    indents = indent*" " if indent else " "
+    return "\""+f"\",{newline}{indents}\"".join(input_list) + "\""
+
+template_env.filters['stringlist'] = string_list
+
 class AlteryxWorkflow(object):
     """docstring for AlteryxWorkflow"""
-    environment = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),"templates")))
+    environment = template_env
 
     def __init__(self, etree_contents):
         self.workflow_dict = self.etree_to_dict(etree_contents)["AlteryxDocument"]
@@ -18,14 +28,10 @@ class AlteryxWorkflow(object):
         self.description = self.workflow_dict["Properties"]["MetaInfo"]["Description"]
         self.node_dict = {}
         for n in self.workflow_dict["Nodes"]["Node"]:
-            if n["GuiSettings"]["@Plugin"] == "AlteryxGuiToolkit.ToolContainer.ToolContainer":
-                children = n["ChildNodes"]["Node"]
-                if not isinstance(children, list):
-                    children = [children]
-                for c in children:
-                    print(c)
-                    self.node_dict[c["@ToolID"]] = self.tool_lookup(c)
             self.node_dict[n["@ToolID"]] = self.tool_lookup(n) 
+            if n["GuiSettings"]["@Plugin"] == "AlteryxGuiToolkit.ToolContainer.ToolContainer":
+                for c in AlteryxNode.list_items(n["ChildNodes"]["Node"]):
+                    self.node_dict[c["@ToolID"]] = self.tool_lookup(c)
         self.connection_list = self.workflow_dict["Connections"]["Connection"]
         self.import_list = []
         self.template = self.environment.get_template("workflow.txt")
@@ -83,6 +89,7 @@ class AlteryxWorkflow(object):
             self.node_dict[output_tool_id].inputs[output_key]= input_value
 
     def to_string(self):
-        node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]
+        # node_list = [self.node_dict[str(i)].render_code() for i in sorted(self.node_dict,key=int)]
+        node_list = [self.node_dict[str(i)].render_code() for i in self.node_dict]
         rendered_nodes = "\n".join(node_list)
         return self.template.render({"workflow_name":self.name, "workflow_description": self.description, "nodes": rendered_nodes})
